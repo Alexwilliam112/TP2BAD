@@ -7,7 +7,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -36,9 +35,9 @@ public class PatientRecord extends JFrame implements ActionListener {
 
     //test var.
     int ButtonTester = 0;
-    String DocStatus1 = "NEW DOCUMENT";
-    String DocStatus2 = "APPROVED";
-    String DocStatus3 = "POSTED";
+    final String new_doc = "NEW DOCUMENT";
+    final String approve_doc = "APPROVED";
+    final String posted_doc = "POSTED";
 
     private DefaultTableModel model;
     private JPanel panel;
@@ -46,7 +45,6 @@ public class PatientRecord extends JFrame implements ActionListener {
     private JScrollPane scrollPane;
     private JTextField txtName, txtAddress, txtNIK, txtDOB;
     @SuppressWarnings("unused")
-    private JComboBox<String> cmbDocType;
 
     
     public PatientRecord() {
@@ -269,7 +267,7 @@ public class PatientRecord extends JFrame implements ActionListener {
                     }
                     if (isUniqueNik) {
                         //no dup, add to table.
-                        model.addRow(new Object[]{DocNumber, DocStatus1, name, newNik, dob, address});
+                        model.addRow(new Object[]{DocNumber, new_doc, name, newNik, dob, address});
                     } else {
                         //dup found, reject.
                         JOptionPane.showMessageDialog(null,
@@ -319,7 +317,7 @@ public class PatientRecord extends JFrame implements ActionListener {
                     }
                     if (isUniqueNik) {
                         //no dup, modify and save.
-                        model.setValueAt(DocStatus1, selectedRow, 1);
+                        model.setValueAt(new_doc, selectedRow, 1);
                         model.setValueAt(name, selectedRow, 2);
                         model.setValueAt(nik, selectedRow, 3);
                         model.setValueAt(dob, selectedRow, 4);
@@ -383,8 +381,8 @@ public class PatientRecord extends JFrame implements ActionListener {
         else if (e.getActionCommand().equals("APPROVE")) {
             if (selectedRow >= 0) {
                 String status = model.getValueAt(selectedRow, 1).toString();
-                if (status.equals(DocStatus1)) {
-                    model.setValueAt(DocStatus2, selectedRow, 1);
+                if (status.equals(new_doc)) {
+                    model.setValueAt(approve_doc, selectedRow, 1);
                     JOptionPane.showMessageDialog(null, "Record Approved", "ACTION SUCCESS", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(null, "ERROR : Document Already Approved", "ACTION FAILED", JOptionPane.ERROR_MESSAGE);
@@ -397,8 +395,8 @@ public class PatientRecord extends JFrame implements ActionListener {
         else if (e.getActionCommand().equals("POST")) {
             if (selectedRow >= 0) {
                 String status = model.getValueAt(selectedRow, 1).toString();
-                if (status.equals(DocStatus2)) {
-                    model.setValueAt(DocStatus3, selectedRow, 1);
+                if (status.equals(approve_doc)) {
+                    model.setValueAt(posted_doc, selectedRow, 1);
                     JOptionPane.showMessageDialog(null, "Record Posted", "ACTION SUCCESS", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(null, "ERROR : Document is either not yet Approved or already Posted", "ACTION FAILED", JOptionPane.ERROR_MESSAGE);
@@ -420,14 +418,14 @@ public class PatientRecord extends JFrame implements ActionListener {
 
         else if (e.getActionCommand().equals("SIMULATION")) {
             String DocNumber = DocNumberGenerator.generateDocNum();
-            model.addRow(new Object[]{DocNumber + "0S", DocStatus3, "Jack Daniels", "785612868541458", "1998-DEC-04", "Jalan Sutera Jelita IV no.22"});
-            model.addRow(new Object[]{DocNumber + "1S", DocStatus3, "Johnie Anderson", "626780423201819", "1992-FEB-26", "Jalan Buntu no.33, Kebayoran Lama"});
-            model.addRow(new Object[]{DocNumber + "2S", DocStatus3, "Jenna Tanya", "249051845821829", "2000-JAN-31", "Jalan gading boulevard"});
-            model.addRow(new Object[]{DocNumber + "3S", DocStatus3, "Jaime Lannister", "424885523621731", "1990-AUG-22", "Jalan KEPALA gading III"});
-            model.addRow(new Object[]{DocNumber + "4S", DocStatus3, "Andrea Wijaya", "381544581327293", "2004-FEB-13", "Jalan Kelapa gading utara no.44"});
-            model.addRow(new Object[]{DocNumber + "5S", DocStatus2, "Freddie", "193439490721828", "2002-NOV-10", "Jalan seha blok 2 no.3a"});
-            model.addRow(new Object[]{DocNumber + "6S", DocStatus2, "Darrel Harlim", "145650688960872", "1997-OCT-31", "Jalan gading boulevard"});
-            model.addRow(new Object[]{DocNumber + "7S", DocStatus2, "Viola Gracia", "137531370725049", "2001-JUL-17", "Jalan meruya barat 4 no.99b"});
+            model.addRow(new Object[]{DocNumber + "0S", posted_doc, "Jack Daniels", "785612868541458", "1998-DEC-04", "Jalan Sutera Jelita IV no.22"});
+            model.addRow(new Object[]{DocNumber + "1S", posted_doc, "Johnie Anderson", "626780423201819", "1992-FEB-26", "Jalan Buntu no.33, Kebayoran Lama"});
+            model.addRow(new Object[]{DocNumber + "2S", posted_doc, "Jenna Tanya", "249051845821829", "2000-JAN-31", "Jalan gading boulevard"});
+            model.addRow(new Object[]{DocNumber + "3S", posted_doc, "Jaime Lannister", "424885523621731", "1990-AUG-22", "Jalan KEPALA gading III"});
+            model.addRow(new Object[]{DocNumber + "4S", posted_doc, "Andrea Wijaya", "381544581327293", "2004-FEB-13", "Jalan Kelapa gading utara no.44"});
+            model.addRow(new Object[]{DocNumber + "5S", approve_doc, "Freddie", "193439490721828", "2002-NOV-10", "Jalan seha blok 2 no.3a"});
+            model.addRow(new Object[]{DocNumber + "6S", approve_doc, "Darrel Harlim", "145650688960872", "1997-OCT-31", "Jalan gading boulevard"});
+            model.addRow(new Object[]{DocNumber + "7S", approve_doc, "Viola Gracia", "137531370725049", "2001-JUL-17", "Jalan meruya barat 4 no.99b"});
             JOptionPane.showMessageDialog(null, "System has Generated 8 Simulation Data.", "ACTION SUCCESS", JOptionPane.INFORMATION_MESSAGE);
         }
     }
